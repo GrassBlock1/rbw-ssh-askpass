@@ -73,9 +73,14 @@ func showHostVerificationPrompt(prompt string) (bool, string) {
 }
 
 func main() {
+	arguments := os.Args[1:]
 	// Get the prompt from arguments
-	prompt := strings.Join(os.Args, " ")
-
+	prompt := strings.Join(arguments, " ")
+	// If the prompt is empty, print a message and exit
+	if prompt == "" {
+		fmt.Println("I'm a ssh askpass helper and I'm not designed to work standalone")
+		return
+	}
 	// Check if it's a host verification prompt
 	if strings.Contains(strings.ToLower(prompt), "this key is not known") {
 		trust, fingerprint := showHostVerificationPrompt(prompt)
