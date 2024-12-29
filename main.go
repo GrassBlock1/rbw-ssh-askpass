@@ -82,7 +82,7 @@ func main() {
 		return
 	}
 	// Check if it's a host verification prompt
-	if strings.Contains(strings.ToLower(prompt), "this key is not known") {
+	if strings.Contains(strings.ToLower(prompt), "the authenticity of host") {
 		trust, fingerprint := showHostVerificationPrompt(prompt)
 		if trust {
 			if fingerprint != "" {
