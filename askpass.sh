@@ -48,5 +48,6 @@ elif [[ "$prompt" == *"The authenticity"* ]]; then
     ask_trust
 else
     echo "The prompt is unknown, asking user" >&2
+    echo "$prompt" >&2
     unknown
 fi
