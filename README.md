@@ -14,7 +14,7 @@ each machine.
 - An item named with private_key file name and it has "passphrase" field in Bitwarden vault
 
 ## Usage
-> [! NOTE ]
+> [!NOTE]
 > A non-binary version is available at [askpass.sh](askpass.sh).
 > To get started, simply download it in somewhere and set the `SSH_ASKPASS` environment variable to the path of the script.
 
