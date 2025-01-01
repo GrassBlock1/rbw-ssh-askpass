@@ -123,6 +123,16 @@ func main() {
 		}
 	}
 
+	if strings.Contains(strings.ToLower(prompt), "password for 'https://") {
+		_, err := fmt.Fprintf(os.Stderr, "Askpass for Git HTTP(S) is not supported (yet).\nConsider configuring git to use the native one provided by rbw instead:\nhttps://git-scm.com/docs/gitcredentials\n")
+		// TODO: another tool for git credentials manage
+		// for now use https://github.com/doy/rbw/blob/main/bin/git-credential-rbw
+		if err != nil {
+			return
+		}
+		os.Exit(1)
+	}
+
 	// If we don't recognize the prompt, just ask the user
 	fmt.Print(prompt + " ")
 	reader := bufio.NewReader(os.Stdin)
