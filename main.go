@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"github.com/rivo/tview"
 	"os"
@@ -72,6 +71,29 @@ func showHostVerificationPrompt(prompt string) (bool, string) {
 	return userChoice, customFingerprint
 }
 
+func showPrompt(prompt string) string {
+	app := tview.NewApplication()
+
+	var response string
+
+	promptForm := tview.NewForm()
+	promptForm.
+		AddInputField(prompt, "", 60, nil, func(text string) {
+			response = text
+		}).
+		AddButton("Confirm", func() {
+			app.Stop()
+		})
+	if err := app.SetRoot(promptForm, true).SetFocus(promptForm).Run(); err != nil {
+		panic(err)
+	}
+	if err := app.SetRoot(promptForm, true).EnableMouse(true).Run(); err != nil {
+		return ""
+	}
+
+	return response
+}
+
 func main() {
 	arguments := os.Args[1:]
 	// Get the prompt from arguments
@@ -134,8 +156,6 @@ func main() {
 	}
 
 	// If we don't recognize the prompt, just ask the user
-	fmt.Print(prompt + " ")
-	reader := bufio.NewReader(os.Stdin)
-	response, _ := reader.ReadString('\n')
+	response := showPrompt(prompt + " ")
 	fmt.Print(strings.TrimSpace(response))
 }
