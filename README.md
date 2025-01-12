@@ -11,16 +11,19 @@ each machine.
 
 - [rbw](https://github.com/doy/rbw) installed and configured in your `$PATH`
 - `SSH_ASKPASS` environment variable set to the path of this script
-- An item named with private_key file name and it has "passphrase" field in Bitwarden vault
+- In your Bitwarden vault, an item named with `private_key` file name(eg: `id_rsa`) exists, and it has a "passphrase" field.
 
 ## Usage
 > [!NOTE]
 > A non-binary version is available at [askpass.sh](askpass.sh).
 > To get started, simply download it in somewhere and set the `SSH_ASKPASS` environment variable to the path of the script.
 
+> [!NOTE]
+> The script is not designed to use with git + https.
+> For Git credential helper, you can use [git-credential-rbw](https://github.com/doy/rbw/blob/main/bin/git-credential-rbw) to use & store them.
+
 1. clone the repository
 2. run `go build` to build the binary
-   (or you can go to release to download it)
 3. set the `SSH_ASKPASS` environment variable to the path of the binary, for example:
 
 ```shell
