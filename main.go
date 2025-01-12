@@ -78,16 +78,13 @@ func showPrompt(prompt string) string {
 
 	promptForm := tview.NewForm()
 	promptForm.
-		AddInputField(prompt, "", 60, nil, func(text string) {
+		AddPasswordField(prompt, "", 60, '*', func(text string) {
 			response = text
 		}).
 		AddButton("Confirm", func() {
 			app.Stop()
 		})
-	if err := app.SetRoot(promptForm, true).SetFocus(promptForm).Run(); err != nil {
-		panic(err)
-	}
-	if err := app.SetRoot(promptForm, true).EnableMouse(true).Run(); err != nil {
+	if err := app.SetRoot(promptForm, true).SetFocus(promptForm).EnableMouse(true).Run(); err != nil {
 		return ""
 	}
 
