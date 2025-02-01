@@ -1,0 +1,32 @@
+# Maintainer: GrassBlock <i@gb0.dev>
+pkgname=rbw-ssh-askpass-git
+_name=${pkgname%-*}
+pkgver=alpha.20250112.15.50fa51a
+pkgrel=1
+pkgdesc="A ssh agent using bitwarden to extract ssh private key passphrase."
+arch=("x86_64")
+url="https://codeberg.org/grassblock/rbw-ssh-askpass"
+license=('MIT')
+depends=("rbw")
+makedepends=("go")
+provides=("rbw-ssh-askpass")
+source=('git+https://codeberg.org/grassblock/rbw-ssh-askpass.git'
+		'rbw-ssh-askpass.install')
+install=${_name}.install
+sha256sums=('SKIP'
+		'1678145d92611c16a14af5f0d5e4b3d2a9888206dd74ab11130b8ca9128b5c31')
+
+pkgver() {
+    cd "$_name"
+    printf "alpha.%s.%s.%s" "$(git log -1 --format="%cd" --date=short | sed s/-//g)" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+	cd "${_name}"
+	go build
+}
+
+package() {
+	cd "${_name}"
+	install -Dm 755 rbw-ssh-askpass -t ${pkgdir}/usr/bin
+}
