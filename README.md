@@ -37,6 +37,11 @@ export SSH_ASKPASS=/path/to/rbw-ssh-askpass
 export SSH_ASKPASS_REQUIRE=prefer
 ```
 
+### Working with rbw's ssh agent
+After adding a key by following [Bitwarden SSH Agent | Bitwarden](https://bitwarden.com/help/ssh-agent/), rbw-agent should work after running `rbw sync`.
+
+However, if you put things like `IdentityFile ~/.ssh/id_ed25519` in your SSH config, you may be still asked to input passphrase. If so, editing the title of SSH key item to the private key filename and add a hidden field named 'passphrase' of should work.
+
 ## License
 
 MIT
