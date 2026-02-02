@@ -1,7 +1,7 @@
 # Maintainer: GrassBlock <i@gb0.dev>
 pkgname=rbw-ssh-askpass-git
 _name=${pkgname%-*}
-pkgver=alpha.20250112.15.50fa51a
+pkgver=alpha.20260202.24.231e410⏎
 pkgrel=1
 pkgdesc="A ssh agent using bitwarden to extract ssh private key passphrase."
 arch=("x86_64")

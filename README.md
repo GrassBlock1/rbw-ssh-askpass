@@ -42,6 +42,9 @@ After adding a key by following [Bitwarden SSH Agent | Bitwarden](https://bitwar
 
 However, if you put things like `IdentityFile ~/.ssh/id_ed25519` in your SSH config, you may be still asked to input passphrase. If so, editing the title of SSH key item to the private key filename and add a hidden field named 'passphrase' of should work.
 
+## TODO
+- [ ] store key and item bindings
+- [ ] allow use to select available items to fill the passphrase when private-key-named item not found 
 ## License
 
 MIT
