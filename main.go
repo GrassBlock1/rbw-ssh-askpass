@@ -20,9 +20,12 @@ func VaultUnlocked() (bool, error) {
 	if err == nil {
 		return true, nil
 	}
-	// If the process ran but exited with non-zero status, err will be *exec.ExitError
+	// If the process ran but exited with non-zero status
 	var exitError *exec.ExitError
 	if errors.As(err, &exitError) {
+		if exitError.ExitCode() == 1 {
+			return false, nil
+		}
 		return false, err
 	}
 	return false, err
@@ -35,11 +38,11 @@ func getBitwardenPassphrase(keyFile string) (string, error) {
 	}
 
 	if !unlocked {
-		if _, err := fmt.Fprint(os.Stderr, "The vault is locked, trying to unlock..."); err != nil {
+		if _, err := fmt.Fprint(os.Stderr, "The vault is locked, trying to unlock...\n"); err != nil {
 			return "", err
 		}
 		if out, err := exec.Command("rbw", "unlock").CombinedOutput(); err != nil {
-			return "", fmt.Errorf("failed to unlock Bitwarden Vault: %s: %v", string(out), err)
+			return "", fmt.Errorf("failed to unlock Bitwarden vault: %s: %v", string(out), err)
 		}
 	}
 
