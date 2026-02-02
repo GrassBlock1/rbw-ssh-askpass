@@ -1,22 +1,52 @@
 package main
 
 import (
+	"errors"
 	"fmt"
-	"github.com/rivo/tview"
 	"os"
 	"os/exec"
 	"regexp"
 	"strings"
+
+	"github.com/rivo/tview"
 )
 
+// VaultUnlocked
+/* check vault status */
+func VaultUnlocked() (bool, error) {
+	status := exec.Command("rbw", "unlocked")
+	_, err := status.Output()
+	if err == nil {
+		return true, nil
+	}
+	// If the process ran but exited with non-zero status, err will be *exec.ExitError
+	var exitError *exec.ExitError
+	if errors.As(err, &exitError) {
+		return false, err
+	}
+	return false, err
+}
+
 func getBitwardenPassphrase(keyFile string) (string, error) {
-	// Execute rbw get command to retrieve the passphrase
-	cmd := exec.Command("rbw", "get", "-f", "passphrase", keyFile)
-	output, err := cmd.Output()
+	unlocked, err := VaultUnlocked()
+	if err != nil {
+		return "", fmt.Errorf("failed to check vault status: %v", err)
+	}
+
+	if !unlocked {
+		if _, err := fmt.Fprint(os.Stderr, "The vault is locked, trying to unlock..."); err != nil {
+			return "", err
+		}
+		if out, err := exec.Command("rbw", "unlock").CombinedOutput(); err != nil {
+			return "", fmt.Errorf("failed to unlock Bitwarden Vault: %s: %v", string(out), err)
+		}
+	}
+
+	out, err := exec.Command("rbw", "get", "-f", "passphrase", keyFile).Output()
 	if err != nil {
 		return "", fmt.Errorf("failed to get passphrase from Bitwarden: %v", err)
 	}
-	return strings.TrimSpace(string(output)), nil
+	return strings.TrimSpace(string(out)), nil
 }
 
 func showHostVerificationPrompt(prompt string) (bool, string) {
