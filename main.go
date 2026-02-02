@@ -8,6 +8,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 )
 
@@ -113,7 +114,8 @@ func showPrompt(prompt string) string {
 		}).
 		AddButton("Confirm", func() {
 			app.Stop()
-		})
+		}).
+		SetLabelColor(tcell.ColorDefault)
 	if err := app.SetRoot(promptForm, true).SetFocus(promptForm).EnableMouse(true).Run(); err != nil {
 		return ""
 	}
@@ -130,6 +132,8 @@ func main() {
 		fmt.Println("I'm a ssh askpass helper and I'm not designed to work standalone")
 		return
 	}
+	// make the tui background transparent
+	tview.Styles.PrimitiveBackgroundColor = tcell.ColorDefault
 	// Check if it's a host verification prompt
 	if strings.Contains(strings.ToLower(prompt), "the authenticity of host") {
 		trust, fingerprint := showHostVerificationPrompt(prompt)
