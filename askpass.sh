@@ -9,6 +9,10 @@ if [ -z "$prompt" ]; then
 fi
 
 get_passphrase_from_rbw() {
+    if ! rbw unlocked > /dev/null 2>&1; then
+        echo "Vault is locked. Unlocking now..." >&2
+        rbw unlock
+    fi
     local key="$1"
     local pass
     pass=$(rbw get -f "passphrase" "$key")
