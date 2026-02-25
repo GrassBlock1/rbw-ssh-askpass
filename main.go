@@ -154,9 +154,9 @@ func main() {
 
 	// If it's a passphrase prompt, get the key file name from the prompt
 	// Assuming prompt format: "Enter passphrase for /path/to/key:"
-	if strings.Contains(strings.ToLower(prompt), "passphrase") {
+	if strings.Contains(strings.ToLower(prompt), "passphrase for") {
 		var keyFile string
-		keyFileRegex, _ := regexp.Compile(` for(?: key)? '?(.+?)'?: `)
+		keyFileRegex, _ := regexp.Compile(`(?: key)? '?(.+?)'?: `)
 		keyFileMatch := keyFileRegex.FindString(prompt)
 		keyFilePath := strings.TrimSuffix(strings.TrimPrefix(keyFileMatch, " for '"), "': ")
 		keyFile = strings.Split(keyFilePath, "/")[len(strings.Split(keyFileMatch, "/"))-1]
